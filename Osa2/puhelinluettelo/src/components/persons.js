@@ -1,8 +1,15 @@
 import React from 'react'
 
-const Persons = ({persons,filter}) => (
-  persons.filter( person => person.name.includes(filter))
-  .map(person => <p key={person.name}>{person.name} {person.number}</p>)
+const Persons = ({persons,filter, onclick}) => (
+  persons
+  .filter( person => person.name.includes(filter))
+  .map(person =>
+    <div key={person.id}>
+      <p>
+        {person.name} {person.number} {" "}
+        <button onClick={() => onclick(person.id)}>Delete</button>
+      </p>
+    </div>)
 )
 
 export default Persons
