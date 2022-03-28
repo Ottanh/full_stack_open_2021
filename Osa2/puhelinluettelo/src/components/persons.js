@@ -1,6 +1,9 @@
 import React from 'react'
 
-const Persons = ({persons,filter, onclick}) => (
+const Persons = ({persons,filter, onclick}) => {
+  console.log(persons)
+
+  return (
   persons
   .filter( person => person.name.includes(filter))
   .map(person =>
@@ -10,6 +13,7 @@ const Persons = ({persons,filter, onclick}) => (
         <button onClick={() => onclick(person.id)}>Delete</button>
       </p>
     </div>)
-)
+  )
+}
 
 export default Persons

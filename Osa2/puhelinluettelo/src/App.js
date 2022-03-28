@@ -85,6 +85,19 @@ const App = () => {
           setMessage(null)
         }, 5000)
       })
+      .catch(error => {
+        console.log(error.response.data)
+        
+        setMessage(error.response.data.error)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+        
+      })
+      
+      console.log(persons)
+      
+      
   }
 
   const deletePerson = (id) => {
