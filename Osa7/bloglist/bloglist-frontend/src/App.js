@@ -1,27 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
 
 import blogService from './services/blogs';
 import loginService from './services/login';
-import BlogForm from './components/forms/Blogform';
-import LoginForm from './components/forms/Loginform';
-import Togglable from './components/Togglable';
+import LoginForm from './components/users/Loginform';
 import Notification from './components/Notification';
-import BlogList from './components/blogs/BlogList';
+import BlogView from './components/blogs/BlogView';
+import User from './components/users/User';
+import Blog from './components/blogs/Blog';
+import UserTable from './components/users/UserTable';
+import Menu from './components/Menu';
 
 import { setNotification } from './reducers/notificationReducer';
 import { setBlogs, concatBlog } from './reducers/blogReducer';
-import { setUser } from './reducers/userReducer';
+import { setLoggedIn } from './reducers/userReducer';
 
 const App = () => {
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification);
+  const user = useSelector((state) => state.user.loggedInUser);
+  const blogFormRef = useRef();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const user = useSelector((state) => state.user);
-
-  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -33,7 +35,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      dispatch(setUser(user));
+      dispatch(setLoggedIn(user));
       blogService.setToken(user.token);
     }
   }, []);
@@ -49,9 +51,8 @@ const App = () => {
       });
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
-
       blogService.setToken(user.token);
-      dispatch(setUser(user));
+      dispatch(setLoggedIn(user));
       setUsername('');
       setPassword('');
     } catch (exception) {
@@ -67,7 +68,7 @@ const App = () => {
   };
 
   const logout = () => {
-    dispatch(setUser(null));
+    dispatch(setLoggedIn(null));
     window.localStorage.clear();
   };
 
@@ -91,16 +92,23 @@ const App = () => {
         />
       ) : (
         <div>
-          <p>
-            {user.name} logged in
-            <button onClick={logout}>Logout</button>
-          </p>
-
-          <Togglable buttonLabel="Create blog" ref={blogFormRef}>
-            <BlogForm createBlog={createBlog} />
-          </Togglable>
-
-          <BlogList user={user} />
+          <Menu user={user} logout={logout} />
+          <h2>blog app</h2>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <BlogView
+                  blogFormRef={blogFormRef}
+                  createBlog={createBlog}
+                  user={user}
+                />
+              }
+            />
+            <Route path="/users" element={<UserTable />} />
+            <Route path="/users/:id" element={<User />} />
+            <Route path="/blogs/:id" element={<Blog user={user} />} />
+          </Routes>
         </div>
       )}
     </div>

@@ -1,26 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import blogService from '../../services/blogs';
 import { putBlog, removeBlog } from '../../reducers/blogReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-const Blog = ({ blog, user }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
-  const [visible, setVisible] = useState(false);
+const Blog = ({ user }) => {
   const dispatch = useDispatch();
-
-  const hideWhenVisible = { display: visible ? 'none' : '' };
-  const showWhenVisible = { display: visible ? '' : 'none' };
-
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+  const id = useParams().id;
+  const blog = useSelector((state) => {
+    return state.blogs.find((blog) => blog.id === id);
+  });
+  if (!blog) {
+    return null;
+  }
 
   const addLike = async (event) => {
     event.preventDefault();
@@ -40,36 +32,24 @@ const Blog = ({ blog, user }) => {
 
   const deleteButton = () => {
     if (blog.user !== null && blog.user.username === user.username) {
-      return (
-        <button
-          onClick={() => {
-            deleteBlog();
-          }}
-        >
-          Delete
-        </button>
-      );
+      return <button onClick={deleteBlog}>Delete</button>;
     }
   };
 
   return (
-    <div style={blogStyle} className="blog">
-      <div style={hideWhenVisible}>
-        {blog.title}
-        <button onClick={toggleVisibility}>view</button>
-      </div>
-      <div style={showWhenVisible} id="blogDetails">
-        <p>
-          {blog.title}
-          <button onClick={toggleVisibility}>hide</button> <br />
-          {blog.author} <br />
-          {blog.url} <br />
-          Likes {blog.likes}
-          <button onClick={addLike}>Like</button>
-        </p>
-
-        {deleteButton()}
-      </div>
+    <div id="blogDetails">
+      <h1>{blog.title}</h1>
+      <p>
+        <a href={blog.url} target="blank">
+          {blog.url}
+        </a>
+        <br />
+        Author: {blog.author} <br />
+        Likes: {blog.likes}
+        <button onClick={addLike}>Like</button> <br />
+      </p>
+      <p>added by {blog.user.name}</p>
+      {deleteButton()}
     </div>
   );
 };
