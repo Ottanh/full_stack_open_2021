@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
+import styled from 'styled-components';
 
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -15,6 +16,16 @@ import Menu from './components/Menu';
 import { setNotification } from './reducers/notificationReducer';
 import { setBlogs, concatBlog } from './reducers/blogReducer';
 import { setLoggedIn } from './reducers/userReducer';
+
+const StyledAppContainer = styled.div`
+  text-align: center;
+`;
+
+const StyledApp = styled.div`
+  display: inline-block;
+  text-align: left;
+  width: 500px;
+`;
 
 const App = () => {
   const dispatch = useDispatch();
@@ -80,38 +91,40 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Notification message={notification} />
-      {user === null ? (
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        />
-      ) : (
-        <div>
-          <Menu user={user} logout={logout} />
-          <h2>blog app</h2>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <BlogView
-                  blogFormRef={blogFormRef}
-                  createBlog={createBlog}
-                  user={user}
-                />
-              }
-            />
-            <Route path="/users" element={<UserTable />} />
-            <Route path="/users/:id" element={<User />} />
-            <Route path="/blogs/:id" element={<Blog user={user} />} />
-          </Routes>
-        </div>
-      )}
-    </div>
+    <StyledAppContainer>
+      <StyledApp>
+        <Notification message={notification} />
+        {user === null ? (
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+        ) : (
+          <div>
+            <h1>Blog App</h1>
+            <Menu user={user} logout={logout} />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <BlogView
+                    blogFormRef={blogFormRef}
+                    createBlog={createBlog}
+                    user={user}
+                  />
+                }
+              />
+              <Route path="/users" element={<UserTable />} />
+              <Route path="/users/:id" element={<User />} />
+              <Route path="/blogs/:id" element={<Blog user={user} />} />
+            </Routes>
+          </div>
+        )}
+      </StyledApp>
+    </StyledAppContainer>
   );
 };
 

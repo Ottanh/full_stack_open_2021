@@ -20,8 +20,8 @@ const UserTable = () => {
       <table>
         <tbody>
           <tr>
-            <td></td>
-            <td>blogs created</td>
+            <th>User</th>
+            <th>Blogs created</th>
           </tr>
           {users.map((user) => (
             <UserRow key={user.id} user={user} />

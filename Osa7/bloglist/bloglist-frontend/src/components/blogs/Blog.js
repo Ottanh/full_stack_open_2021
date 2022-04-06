@@ -3,11 +3,18 @@ import blogService from '../../services/blogs';
 import { putBlog, removeBlog } from '../../reducers/blogReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import CommentForm from './CommentForm';
+import styled from 'styled-components';
+
+const StyledList = styled.ul`
+  padding-left: 20px;
+  list-style-type: circle;
+`;
 
 const Blog = ({ user }) => {
   const dispatch = useDispatch();
   const id = useParams().id;
-  const blog = useSelector((state) => {
+  let blog = useSelector((state) => {
     return state.blogs.find((blog) => blog.id === id);
   });
   if (!blog) {
@@ -47,9 +54,15 @@ const Blog = ({ user }) => {
         Author: {blog.author} <br />
         Likes: {blog.likes}
         <button onClick={addLike}>Like</button> <br />
+        added by {blog.user.name} {deleteButton()}
       </p>
-      <p>added by {blog.user.name}</p>
-      {deleteButton()}
+      <h2>comments</h2>
+      <CommentForm id={blog.id} />
+      <StyledList>
+        {blog.comments.map((c, index) => (
+          <li key={index}>{c}</li>
+        ))}
+      </StyledList>
     </div>
   );
 };

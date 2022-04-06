@@ -1,29 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+const StyledLink = styled(Link)`
+  color: black;
+  font-weight: normal;
+  padding-right: 10px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const StyledBlogContainer = styled.div`
+  padding-top: 10;
+  padding-left: 2;
+  margin-bottom: 5px;
+  padding: 5px;
+  display: block;
+`;
 
 const BlogList = () => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
   const blogs = useSelector((state) => state.blogs);
 
   return (
     <div>
       {blogs.map((blog) => (
-        <div key={blog.id} style={blogStyle}>
-          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-        </div>
+        <StyledBlogContainer key={blog.id}>
+          <StyledLink to={`/blogs/${blog.id}`}>{blog.title}</StyledLink>
+        </StyledBlogContainer>
       ))}
     </div>
   );
 };
 
 export default BlogList;
-
-//<Blog key={blog.id} blog={blog} user={user} />

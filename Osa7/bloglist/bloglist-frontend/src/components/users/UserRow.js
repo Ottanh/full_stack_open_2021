@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledCell = styled.td`
+  text-align: center;
+`;
 
 const UserRow = ({ user }) => {
   return (
     <tr>
-      <td>
+      <StyledCell>
         <Link to={`/users/${user.id}`}>{user.name}</Link>
-      </td>
-      <td>{user.blogs.length}</td>
+      </StyledCell>
+      <StyledCell>{user.blogs.length}</StyledCell>
     </tr>
   );
 };

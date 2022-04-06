@@ -7,10 +7,10 @@ import BlogList from './BlogList';
 const BlogView = ({ blogFormRef, createBlog, user }) => {
   return (
     <div>
+      <BlogList user={user} />
       <Togglable buttonLabel="Create blog" ref={blogFormRef}>
         <BlogForm createBlog={createBlog} />
       </Togglable>
-      <BlogList user={user} />
     </div>
   );
 };

@@ -33,11 +33,21 @@ blogsRouter.post('/api/blogs', userExtractor, async (request, response) => {
     })
     .execPopulate();
 
-  logger.info(savedBlog);
-
   user.blogs = user.blogs.concat(savedBlog._id);
   await user.save();
   response.status(201).json(savedBlog);
+});
+
+blogsRouter.post('/api/blogs/:id/comments', async (request, response) => {
+  const comment = request.body.content;
+  await Blog.updateOne(
+    { _id: request.params.id },
+    { $push: { comments: comment } }
+  );
+
+  const blogWithComment = await Blog.findById(request.params.id);
+
+  response.json(blogWithComment);
 });
 
 blogsRouter.delete(
@@ -70,8 +80,6 @@ blogsRouter.get('/api/blogs/:id', async (request, response, next) => {
 });
 
 blogsRouter.put('/api/blogs/:id', async (request, response, next) => {
-  const body = request.body;
-
   const blog = await Blog.findById(request.params.id);
   blog.likes = request.body.likes;
 
