@@ -25,10 +25,9 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      const name = { name: args.name }
-      const genre = args.genre ? { genres: { $in: args.genre} } : { }
+      const genres = args.genre ? { genres: { $in: args.genre} } : null
       try {
-        return await Book.find({ name, genre })
+        return await Book.find(genres)
       } catch (e) {
         throw new UserInputError(e.message, {
           invalidArgs: args
@@ -48,6 +47,7 @@ const resolvers = {
       })
     },
     me: (root, args, context) => {
+      console.log(context.currentUser)
       return context.currentUser
     }
   },
@@ -104,7 +104,7 @@ const resolvers = {
 
     },
     createUser: async (root, args) => {
-      const user = new User({ username: args.username })
+      const user = new User({ ...args })
 
       return user.save()
         .catch(error => {

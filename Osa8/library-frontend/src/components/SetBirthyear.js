@@ -10,17 +10,8 @@ const SetBirthyear = ({ show, result}) => {
   const [born, setYear] = useState('')
   const [select, setSelect] = useState('')
 
-  if (!show) {
-    return null
-  }
-
-  if (result.loading)  {
-    return <div>loading...</div>
-  }
-
   const submit = async (event) => {
     event.preventDefault()
-    console.log('add book...')
     addBook({  variables: { name: select, born: parseInt(born)  } })
     setSelect('')
     setYear('')
@@ -29,6 +20,14 @@ const SetBirthyear = ({ show, result}) => {
   const handleChange = (event) => {  
     event.preventDefault()  
     setSelect(event.target.value);  
+  }
+
+  if (!show) {
+    return null
+  }
+
+  if(result.loading) {
+    return null
   }
   
   return (

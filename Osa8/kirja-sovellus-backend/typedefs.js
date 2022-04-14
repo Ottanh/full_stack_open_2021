@@ -46,6 +46,7 @@ const typeDefs = gql`
     ) : editAuthor
     createUser(
       username: String!
+      favoriteGenre: String
     ): User
     login(
       username: String!

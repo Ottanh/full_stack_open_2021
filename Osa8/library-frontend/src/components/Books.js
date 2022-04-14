@@ -1,33 +1,46 @@
 import { ALL_BOOKS } from '../queries'
 import { useQuery } from '@apollo/client'
+import { useState } from 'react'
+import BookTable from './BookTable'
 
 const Books = (props) => {
-  const result = useQuery(ALL_BOOKS)
+  const [select, setSelect] = useState('all genres')
+  const result = useQuery(ALL_BOOKS, {
+    variables: {genre: select === 'all genres' ? undefined : select}
+  })
+
+  const genres = ['all genres', 'refactoring', 'agile', 'patterns', 'design', 'crime', 'classic']
+
+  const handleChange = (event) => {  
+    event.preventDefault()  
+    setSelect(event.target.value);  
+  }
+
 
   if (!props.show) {
     return null
+  }
+  if (result.loading)  {
+    return (
+    <div>
+      <h2>books</h2>
+      loading...
+    </div>
+    )
   }
 
   return (
     <div>
       <h2>books</h2>
 
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {result.data.allBooks.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      genre
+      <select value={select} onChange={handleChange}>            
+        {genres.map(a => (
+          <option key={a} value={a}>{a}</option>
+        ))}
+      </select>
+
+      <BookTable books={result.data.allBooks} />
     </div>
   )
 }
