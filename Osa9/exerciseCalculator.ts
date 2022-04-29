@@ -8,7 +8,7 @@ interface Result {
   average: number
 }
 
-const parseArguments = (args: Array<string>): [Array<number>,number] => {
+export const parseArguments = (args: Array<string>): [Array<number>,number] => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
   let target: number;
@@ -19,8 +19,8 @@ const parseArguments = (args: Array<string>): [Array<number>,number] => {
   }
 
   const hours: Array<number> = [];
-  for (let i: number = 3; i < args.length; i++) {
-    const value: number = Number(args[i]);
+  for (let i = 3; i < args.length; i++) {
+    const value = Number(args[i]);
     if(!isNaN(value)) {
       hours.push(value);
     } else {
@@ -28,16 +28,16 @@ const parseArguments = (args: Array<string>): [Array<number>,number] => {
     }
   }
 
-  return [hours, target]
-}
+  return [hours, target];
+};
 
 
-const calculateExercises = (hours: Array<number>, target: number): Result => {
+export const calculateExercises = (hours: Array<number>, target: number): Result => {
   const periodLength: number = hours.length;
   const trainingDays: number = hours.filter(h => h !== 0).length;
   const average: number = hours.reduce((p, c) => p + c, 0) / hours.length;
 
-  const ratingDescriptions: Array<string> = ['Not very good', 'Okay but could be better', 'Very good']
+  const ratingDescriptions: Array<string> = ['Not very good', 'Okay but could be better', 'Very good'];
 
   let rating: number;
   if(average < (target/2)) {
@@ -56,10 +56,10 @@ const calculateExercises = (hours: Array<number>, target: number): Result => {
     ratingDescription: ratingDescriptions[rating-1],
     target,
     average
-  }
-}
+  };
+};
 
 
 
-const [hours, target] : [Array<number>, number] = parseArguments(process.argv);
-console.log(calculateExercises(hours, target));
+//const [hours, target] : [Array<number>, number] = parseArguments(process.argv);
+//console.log(calculateExercises(hours, target));

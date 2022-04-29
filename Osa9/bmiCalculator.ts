@@ -1,4 +1,4 @@
-const parseArgumentsBmi = (args: Array<string>): [number, number] => {
+export const parseArgumentsBmi = (args: Array<string>): [number, number] => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
 
@@ -7,19 +7,19 @@ const parseArgumentsBmi = (args: Array<string>): [number, number] => {
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
-const calculateBmi = (heigth: number, weigth: number): string => {
-  const bmi =  weigth / (heigth/100)**2
-  console.log(bmi)
+export const calculateBmi = (heigth: number, weigth: number): string => {
+  const bmi =  weigth / (heigth/100)**2;
+  console.log(bmi);
   if(bmi < 18.5){
-    return 'Underweight'
+    return 'Underweight';
   } else if (bmi > 25){
-    return 'Overweight'
+    return 'Overweight';
   } else {
-    return 'Normal'
+    return 'Normal';
   }
-} 
+}; 
 
-const [heigth, weigth] : [number, number] = parseArgumentsBmi(process.argv);
-console.log(calculateBmi(heigth, weigth));
+//const [heigth, weigth] : [number, number] = parseArgumentsBmi(process.argv);
+//console.log(calculateBmi(heigth, weigth));
