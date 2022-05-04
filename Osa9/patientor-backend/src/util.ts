@@ -1,6 +1,12 @@
 import { NewPatient, Gender } from "./types";
 
-type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+type Fields = { 
+  name: unknown, 
+  dateOfBirth: unknown, 
+  ssn: unknown, 
+  gender: unknown, 
+  occupation: unknown
+};
 
 export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatient => {
   const newEntry: NewPatient = {
@@ -8,7 +14,8 @@ export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fie
     dateOfBirth: parseString(dateOfBirth),
     ssn: parseString(ssn),
     gender: parseGender(gender),
-    occupation: parseString(occupation)
+    occupation: parseString(occupation),
+    entries: []
   };
   return newEntry;
 };
