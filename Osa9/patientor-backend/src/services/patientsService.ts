@@ -1,5 +1,5 @@
 import patientsData from '../../data/patients';
-import { PublicPatient, NewPatient, Patient } from '../types';
+import { PublicPatient, NewPatient, Patient, Entry } from '../types';
 import { v1 as uuid } from 'uuid';
 
 const getPatients = (): PublicPatient[] => {
@@ -13,10 +13,10 @@ const getPatients = (): PublicPatient[] => {
 };
 
 const addPatient = (entry: NewPatient): Patient => {
-  const newPatient = {
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
+  const newPatient: Patient = {
     id: uuid(),
-    ...entry
+    ...entry,
+    entries: new Array<Entry>()
   };
 
   patientsData.push(newPatient);

@@ -1,12 +1,5 @@
-import { NewPatient, Gender } from "./types";
+import { NewPatient, Gender, Entry, Fields } from "./types";
 
-type Fields = { 
-  name: unknown, 
-  dateOfBirth: unknown, 
-  ssn: unknown, 
-  gender: unknown, 
-  occupation: unknown
-};
 
 export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatient => {
   const newEntry: NewPatient = {
@@ -14,8 +7,7 @@ export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fie
     dateOfBirth: parseString(dateOfBirth),
     ssn: parseString(ssn),
     gender: parseGender(gender),
-    occupation: parseString(occupation),
-    entries: []
+    occupation: parseString(occupation)
   };
   return newEntry;
 };
@@ -35,9 +27,28 @@ const parseGender = (gender: unknown): Gender => {
   return gender;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const parseEntries = (entries: unknown): Entry[] => {
+  if (!entries || !Array.isArray(entries) || !isEntries(entries)) {
+    throw new Error('Incorrect or missing name');
+  }
+  return entries;
+};
+
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isEntries = (param: any): param is Entry => {
+  return 'id' in param;
+
+  if(Array.isArray(param) && param.length > 0){
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
+  }
+};
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isGender = (param: any): param is Gender => {

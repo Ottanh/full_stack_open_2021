@@ -1,6 +1,7 @@
 import express from 'express';
 import patientsService from '../services/patientsService';
 import { toNewPatient } from '../util';
+import { Fields } from '../types';
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.get('/', (_req, res) => {
 
 router.post('/', (req, res) => {
   try {
-    const newPatientEntry = toNewPatient(req.body);
+    const newPatientEntry = toNewPatient(req.body as Fields);
     const addedEntry = patientsService.addPatient(newPatientEntry);    
     res.json(addedEntry);
   } catch (error: unknown) {
