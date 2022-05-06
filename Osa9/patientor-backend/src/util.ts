@@ -1,6 +1,7 @@
 import { NewPatient, Gender, Entry, Fields } from "./types";
 
 
+
 export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatient => {
   const newEntry: NewPatient = {
     name: parseString(name),
@@ -11,6 +12,9 @@ export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fie
   };
   return newEntry;
 };
+
+
+
 
 const parseString = (name: unknown): string => {
   if (!name || !isString(name)) {

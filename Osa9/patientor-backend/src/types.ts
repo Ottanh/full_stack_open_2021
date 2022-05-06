@@ -70,6 +70,11 @@ export type NewPatient = Omit<Patient, 'id' | 'entries'>;
 
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
 
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+// Define Entry without the 'id' property
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+
 
 export type Fields = { 
   name: unknown, 
@@ -79,6 +84,19 @@ export type Fields = {
   occupation: unknown
 };
 
+export type EntryFields = {
+  type: string;
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  healthCheckRating?: HealthCheckRating;
+  employerName?: string;
+  discharge?: {
+    date: unknown;
+    criteria: unknown;
+  };
+};
 
 
 

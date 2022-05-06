@@ -1,0 +1,46 @@
+
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries 
+Content-Type: application/json
+
+{
+    "description": "hello",
+    "date": "222",
+    "specialist": "jaaaa",
+    "type": "Hospital",
+    "discharge": {
+      "date": "333",
+      "criteria": "okok"
+    }
+}
+
+################
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries 
+Content-Type: application/json
+
+{
+    "description": "hello",
+    "date": "222",
+    "specialist": "jaaaa",
+    "type": "OccupationalHealthcare",
+    "employerName": "mikkO",
+    "discharge": {
+      "date": "333",
+      "criteria": "okok"
+    }
+}
+
+################
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries 
+Content-Type: application/json
+
+{
+    "description": "hello",
+    "date": "222",
+    "specialist": "jaaaa",
+    "type": "HealthCheck",
+    "healthCheckRating": "2"
+}
+

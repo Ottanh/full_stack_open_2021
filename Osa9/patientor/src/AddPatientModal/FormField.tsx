@@ -24,7 +24,38 @@ type SelectFieldProps = {
   options: GenderOption[];
 };
 
+
+export type RatingOption = {
+  value: '0' | '1' | '2' | '3';
+};
+
+export type SelectFieldPropsRating = {
+  name: string;
+  label: string;
+  options: RatingOption[];
+};
+
+
 const FormikSelect = ({ field, ...props }: FieldProps) => <Select {...field} {...props} />;
+
+export const SelectHealthCheckRating = ({ name, label, options }: SelectFieldPropsRating) => (
+  <>
+    <InputLabel>{label}</InputLabel>
+    <Field
+      fullWidth
+      style={{ marginBottom: "0.5em" }}
+      label={label}
+      name={name}
+      component={FormikSelect}
+    >
+      {options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.value}
+        </MenuItem>
+      ))}
+    </Field>
+  </>
+);
 
 export const SelectField = ({ name, label, options }: SelectFieldProps) => (
   <>

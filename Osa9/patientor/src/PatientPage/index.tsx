@@ -4,8 +4,9 @@ import { Box, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
-import { Patient } from "../types";
+import { Entry, Patient } from "../types";
 import EntryView from "./EntryView";
+import AddEntryForm, { EntryFormValues } from "./AddEntryForm";
 
 const PatientPage = () => {
   const [{ patients, diagnoses }, dispatch] = useStateValue();
@@ -38,6 +39,21 @@ const PatientPage = () => {
     return null;
   }
 
+  const submitNewEntry = async (values: EntryFormValues) => {
+    console.log(values);
+    try {
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${patient.id}/entries`,
+        values
+      );
+      dispatch({ type: "ADD_ENTRY", payload: newEntry });
+    } catch (error: unknown) {
+      if(axios.isAxiosError(error) && error.response) {
+        console.error(error.response.data);
+      }
+    }
+  };
+
   return (
     <div>
       <Box sx={{ paddingTop: 20, paddingBottom: 20 }}>
@@ -56,6 +72,7 @@ const PatientPage = () => {
       {patient.entries?.map((entry) => (
         <EntryView key={entry.id} entry={entry} diagnoses={diagnoses} />
       ))}
+      <AddEntryForm onSubmit={submitNewEntry} />
     </div>
   );
 };

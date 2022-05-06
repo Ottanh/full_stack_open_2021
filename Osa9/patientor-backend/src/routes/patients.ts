@@ -1,7 +1,7 @@
 import express from 'express';
 import patientsService from '../services/patientsService';
 import { toNewPatient } from '../util';
-import { Fields } from '../types';
+import { Fields, EntryWithoutId } from '../types';
 
 const router = express.Router();
 
@@ -12,6 +12,7 @@ router.get('/', (_req, res) => {
 router.post('/', (req, res) => {
   try {
     const newPatientEntry = toNewPatient(req.body as Fields);
+    console.log(req.body);
     const addedEntry = patientsService.addPatient(newPatientEntry);    
     res.json(addedEntry);
   } catch (error: unknown) {
@@ -20,6 +21,35 @@ router.post('/', (req, res) => {
       errorMessage += ' Error: ' + error.message;
     }
     res.status(400).send(errorMessage);
+  }
+});
+
+
+
+
+router.post('/:id/entries', (req, res) => {
+
+  console.log(req.body);
+
+  if(!(req.body.description && req.body.date && req.body.specialist)) {
+    res.sendStatus(400);
+  } else if (req.body.type === 'Hospital' && !(req.body.discharge)) {
+    res.sendStatus(400);
+  } else if (req.body.type === 'HealthCheck' && !(req.body.healthCheckRating)) {
+    res.sendStatus(400);
+  } else if (req.body.type === 'OccupationalHealthcare' && !(req.body.employerName)) {
+    res.sendStatus(400);
+  } else {
+    try {
+      const addedEntry = patientsService.addEntry(req.body as EntryWithoutId, req.params.id);    
+      res.json(addedEntry);
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong.';
+      if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+      }
+      res.status(400).send(errorMessage);
+    }
   }
 });
 
